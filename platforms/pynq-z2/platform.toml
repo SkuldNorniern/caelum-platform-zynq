@@ -16,3 +16,10 @@ ZYNQ_FCLK_MHZ = "100"
 # what the kernel's masters see through the HP ports (32-bit addresses)
 [memory]
 ddr = { size_mb = 512, base = 0x00000000, ports = ["HP0", "HP1", "HP2", "HP3", "ACP"] }
+
+# host programs: Rust ones (host = "host/main.rs") are built as static Cortex-A9 binaries, they open
+# the design with caelum::host::open() through the zynq backend (fpga_manager, /dev/mem, zocl)
+[host]
+backend = "zynq"
+rust-target = "armv7-unknown-linux-musleabihf"
+linker = "rust-lld"

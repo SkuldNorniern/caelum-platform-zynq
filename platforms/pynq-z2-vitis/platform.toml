@@ -17,3 +17,10 @@ VITIS_LINK_OPTS = "--save-temps"
 # for connectivity: sp=<kernel>.<port>:HP0 .. HP3
 [memory]
 ddr = { size_mb = 512, base = 0x00000000, ports = ["HP0", "HP1", "HP2", "HP3"] }
+
+# host programs: Rust ones (host = "host/main.rs") are built as static Cortex-A9 binaries, they open
+# the design with caelum::host::open() through the zynq backend (fpga_manager, /dev/mem, zocl)
+[host]
+backend = "zynq"
+rust-target = "armv7-unknown-linux-musleabihf"
+linker = "rust-lld"
