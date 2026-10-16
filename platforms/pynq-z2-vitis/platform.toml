@@ -1,0 +1,19 @@
+# TUL PYNQ-Z2 as a Vitis embedded platform: kernels are linked by v++ into an extensible PS7 design.
+# There is no installed shell for Zynq-7000, so build_platform.sh makes one (hw.tcl -> XSA,
+# make_xpfm.py -> .xpfm) the first time and caelum-target-vitis caches it in build/.platforms/.
+# Besides kernel.xclbin the build leaves <top>.bit + <top>.hwh from the link, for pynq.Overlay.
+
+[platform]
+name = "TUL PYNQ-Z2 (Vitis)"
+part = "xc7z020clg400-1"
+modes = ["hw"]
+requires = ["xclbin"]
+
+[env]
+ZYNQ_FCLK_MHZ = "100"
+# keep the link project: <top>.bit and <top>.hwh are copied out of it for PYNQ
+VITIS_LINK_OPTS = "--save-temps"
+
+# for connectivity: sp=<kernel>.<port>:HP0 .. HP3
+[memory]
+ddr = { size_mb = 512, base = 0x00000000, ports = ["HP0", "HP1", "HP2", "HP3"] }
