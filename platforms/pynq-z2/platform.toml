@@ -1,0 +1,18 @@
+# TUL PYNQ-Z2. Zynq-7000 XC7Z020, 512 MB DDR3 on the PS, PYNQ image on the SD card.
+# caelum-target-vivado builds the bitstream: the kernel goes into shell.tcl's block design
+# (PS7, GP0 -> s_axi_control, kernel masters -> HP0, interrupt -> IRQ_F2P) and the build
+# leaves <top>.bit + <top>.hwh, what pynq.Overlay loads. run.sh copies them to the board.
+
+[platform]
+name = "TUL PYNQ-Z2"
+part = "xc7z020clg400-1"
+modes = ["bitstream", "impl", "synth"]
+requires = ["bitstream"]
+
+# fabric clock FCLK_CLK0 in MHz, a target can set fclk-mhz = ... instead
+[env]
+ZYNQ_FCLK_MHZ = "100"
+
+# what the kernel's masters see through the HP ports (32-bit addresses)
+[memory]
+ddr = { size_mb = 512, base = 0x00000000, ports = ["HP0", "HP1", "HP2", "HP3", "ACP"] }
